@@ -23,7 +23,8 @@ FLUSH PRIVILEGES;
 --
 -- Base de datos: `beauty_data`
 --
-CREATE DATABASE IF NOT EXISTS beauty_data;
+DROP DATABASE IF EXISTS beauty_data;
+CREATE DATABASE beauty_data;
 USE beauty_data;
 -- --------------------------------------------------------
 
@@ -78,5 +79,6 @@ VALUES
 ('Máscara de Pestañas Volumen Extremo', 'Ojos', 'Resistente al agua, color negro profundo.', 5.75, 10.50, 0, 'Distribuidora Estilo', 'Agotado'),
 
 ('Paleta de Sombras Nude', 'Ojos', '12 tonos neutros entre mates y brillantes.', 12.00, 25.00, 15, 'Cosméticos Global S.A.', 'Activo'),
+
 
 ('Corrector de Ojeras Light', 'Rostro', 'Cobertura completa con hidratación.', 3.90, 8.50, 25, 'Beauty Supply Co.', 'Activo');
