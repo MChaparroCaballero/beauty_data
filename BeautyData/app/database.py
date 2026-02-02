@@ -29,7 +29,7 @@ def fetch_all_productos() -> List[Dict[str, Any]]:
         cur = conn.cursor(dictionary=True)  # type: ignore[assignment]
         try:
             cur.execute(
-                "SELECT COD, NOMBRE, Categoria, Descripción, Precio_de_compra, Precio_de_venta, Stock, Proveedor, Estado FROM productos;"
+                "SELECT cod, nombre, categoria, descripcion, precio_de_compra, precio_de_venta, stock, proveedor, estado FROM productos;"
             )
             # Opción A: cast para contentar al type checker
             rows = cast(List[Dict[str, Any]], cur.fetchall())
@@ -48,15 +48,15 @@ def insert_producto(
     nombre: str, 
     categoria: str, 
     descripcion: str, 
-    precio_compra: float, 
-    precio_venta: float, 
+    precio_de_compra: float, 
+    precio_de_venta: float, 
     stock: int, 
     proveedor: str, 
     estado: str = 'Activo'
 ) -> int:
     """
     Inserta un nuevo producto en la base de datos.
-    Retorna el COD del producto insertado.
+    Retorna el cod del producto insertado.
     """
     conn = None
     try:
@@ -65,10 +65,10 @@ def insert_producto(
         try:
             cur.execute(
                 """
-                INSERT INTO productos (NOMBRE, Categoria, Descripción, Precio_de_compra, Precio_de_venta, Stock, Proveedor, Estado)
+                INSERT INTO productos (nombre, categoria, descripcion, precio_de_compra, precio_de_venta, stock, proveedor, estado)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                 """,
-                (nombre, categoria, descripcion, precio_compra, precio_venta, stock, proveedor, estado)
+                (nombre, categoria, descripcion, precio_de_compra, precio_de_venta, stock, proveedor, estado)
             )
             conn.commit()
             return cur.lastrowid or 0
@@ -81,7 +81,7 @@ def insert_producto(
 
 def delete_producto(producto_cod: int) -> bool:
     """
-    Elimina un producto de la base de datos por su COD.
+    Elimina un producto de la base de datos por su cod.
     Retorna True si se eliminó correctamente, False si no se encontró.
     """
     conn = None
@@ -90,7 +90,7 @@ def delete_producto(producto_cod: int) -> bool:
         cur = conn.cursor()
         try:
             cur.execute(
-                "DELETE FROM productos WHERE COD = %s",
+                "DELETE FROM productos WHERE cod = %s",
                 (producto_cod,)
             )
             conn.commit()
@@ -104,7 +104,7 @@ def delete_producto(producto_cod: int) -> bool:
 
 def fetch_producto_by_cod(producto_cod: int) -> Dict[str, Any] | None:
     """
-    Obtiene un producto por su COD.
+    Obtiene un producto por su cod.
     Retorna un dict con los datos del producto o None si no existe.
     """
     conn = None
@@ -114,7 +114,7 @@ def fetch_producto_by_cod(producto_cod: int) -> Dict[str, Any] | None:
         cur = conn.cursor(dictionary=True)  # type: ignore[assignment]
         try:
             cur.execute(
-                "SELECT COD, NOMBRE, Categoria, Descripción, Precio_de_compra, Precio_de_venta, Stock, Proveedor, Estado FROM productos WHERE COD = %s",
+                "SELECT cod, nombre, categoria, descripcion, precio_de_compra, precio_de_venta, stock, proveedor, estado FROM productos WHERE cod = %s",
                 (producto_cod,)
             )
             result = cur.fetchone()
@@ -131,8 +131,8 @@ def update_producto(
     nombre: str,
     categoria: str,
     descripcion: str,
-    precio_compra: float,
-    precio_venta: float,
+    precio_de_compra: float,
+    precio_de_venta: float,
     stock: int,
     proveedor: str,
     estado: str
@@ -149,10 +149,10 @@ def update_producto(
             cur.execute(
                 """
                 UPDATE productos 
-                SET NOMBRE = %s, Categoria = %s, Descripción = %s, Precio_de_compra = %s, Precio_de_venta = %s, Stock = %s, Proveedor = %s, Estado = %s
-                WHERE COD = %s
+                SET nombre = %s, categoria = %s, descripcion = %s, precio_de_compra = %s, precio_de_venta = %s, stock = %s, proveedor = %s, estado = %s
+                WHERE cod = %s
                 """,
-                (nombre, categoria, descripcion, precio_compra, precio_venta, stock, proveedor, estado, producto_cod)
+                (nombre, categoria, descripcion, precio_de_compra, precio_de_venta, stock, proveedor, estado, producto_cod)
             )
             conn.commit()
             return cur.rowcount > 0
